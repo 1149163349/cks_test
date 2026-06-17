@@ -1,43 +1,68 @@
 #include <windows.h>
+#include "file.h"
 
+// 按钮ID
+#define ID_INTERACT 1
+#define ID_SERVICE 2
+#define ID_HEALTH 3
+#define ID_FILE 4
+#define ID_ALARM 5
+#define ID_EXIT 6
+
+// 窗口过程函数
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     switch (msg)
     {
     case WM_CREATE:
 
-        // 人机交互按钮
+        // 人机交互
         CreateWindowW(
-            L"BUTTON",
-            L"人机交互",
+            L"BUTTON", L"人机交互",
             WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON,
-            320, 150, 160, 40,
-            hwnd,
-            (HMENU)1,
-            NULL,
-            NULL);
+            320, 80, 160, 40,
+            hwnd, (HMENU)ID_INTERACT,
+            NULL, NULL);
 
-        // 文件管理按钮
+        // 家务服务
         CreateWindowW(
-            L"BUTTON",
-            L"文件管理",
+            L"BUTTON", L"家务服务",
             WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON,
-            320, 230, 160, 40,
-            hwnd,
-            (HMENU)2,
-            NULL,
-            NULL);
+            320, 140, 160, 40,
+            hwnd, (HMENU)ID_SERVICE,
+            NULL, NULL);
 
-        // 退出系统按钮
+        // 健康监测
         CreateWindowW(
-            L"BUTTON",
-            L"退出系统",
+            L"BUTTON", L"健康监测",
             WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON,
-            320, 310, 160, 40,
-            hwnd,
-            (HMENU)3,
-            NULL,
-            NULL);
+            320, 200, 160, 40,
+            hwnd, (HMENU)ID_HEALTH,
+            NULL, NULL);
+
+        // 文件管理
+        CreateWindowW(
+            L"BUTTON", L"文件管理",
+            WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON,
+            320, 260, 160, 40,
+            hwnd, (HMENU)ID_FILE,
+            NULL, NULL);
+
+        // 紧急报警
+        CreateWindowW(
+            L"BUTTON", L"紧急报警",
+            WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON,
+            320, 320, 160, 40,
+            hwnd, (HMENU)ID_ALARM,
+            NULL, NULL);
+
+        // 退出系统
+        CreateWindowW(
+            L"BUTTON", L"退出系统",
+            WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON,
+            320, 380, 160, 40,
+            hwnd, (HMENU)ID_EXIT,
+            NULL, NULL);
 
         break;
 
@@ -45,7 +70,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
         switch (LOWORD(wParam))
         {
-        case 1:
+        case ID_INTERACT:
             MessageBoxW(
                 hwnd,
                 L"你好，我是家庭看护机器人！",
@@ -53,7 +78,23 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 MB_OK);
             break;
 
-        case 2:
+        case ID_SERVICE:
+            MessageBoxW(
+                hwnd,
+                L"正在执行家务服务……",
+                L"家务服务",
+                MB_OK);
+            break;
+
+        case ID_HEALTH:
+            MessageBoxW(
+                hwnd,
+                L"体温：36.5℃\n心率：75次/分钟\n状态正常",
+                L"健康监测",
+                MB_OK);
+            break;
+
+        case ID_FILE:
             MessageBoxW(
                 hwnd,
                 L"文件管理模块开发中……",
@@ -61,7 +102,15 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 MB_OK);
             break;
 
-        case 3:
+        case ID_ALARM:
+            MessageBoxW(
+                hwnd,
+                L"发现异常！\n已通知家属！",
+                L"紧急报警",
+                MB_OK);
+            break;
+
+        case ID_EXIT:
             PostQuitMessage(0);
             break;
         }
@@ -76,10 +125,12 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     return DefWindowProcW(hwnd, msg, wParam, lParam);
 }
 
-int WINAPI wWinMain(HINSTANCE hInstance,
-                    HINSTANCE hPrevInstance,
-                    PWSTR pCmdLine,
-                    int nCmdShow)
+// 主函数
+int WINAPI wWinMain(
+    HINSTANCE hInstance,
+    HINSTANCE hPrevInstance,
+    PWSTR pCmdLine,
+    int nCmdShow)
 {
     WNDCLASSW wc = {0};
 
