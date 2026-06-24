@@ -4,13 +4,11 @@
 
 void readLog(char *buffer)
 {
-    FILE *fp;
+    FILE *fp = fopen("log.txt", "r");
 
-    fp = fopen("data/log.txt", "r");
-
-    if (fp == NULL)
+    if(fp == NULL)
     {
-        strcpy(buffer, "æ— æ³•æ‰“å¼€æ—¥å¿—æ–‡ä»¶ï¼");
+        strcpy(buffer, "ÎŞ·¨´ò¿ªÈÕÖ¾ÎÄ¼ş£¡");
         return;
     }
 
@@ -18,10 +16,36 @@ void readLog(char *buffer)
 
     buffer[0] = '\0';
 
-    while (fgets(line, sizeof(line), fp))
+    while(fgets(line, sizeof(line), fp))
     {
         strcat(buffer, line);
     }
+
+    fclose(fp);
+}
+#include <time.h>
+
+void saveLog(char *msg)
+{
+    FILE *fp = fopen("log.txt", "a");
+
+    if(fp == NULL)
+        return;
+
+    time_t now = time(NULL);
+
+    struct tm *t = localtime(&now);
+
+    fprintf(
+        fp,
+        "%04d-%02d-%02d %02d:%02d:%02d %s\n",
+        t->tm_year + 1900,
+        t->tm_mon + 1,
+        t->tm_mday,
+        t->tm_hour,
+        t->tm_min,
+        t->tm_sec,
+        msg);
 
     fclose(fp);
 }
